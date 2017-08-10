@@ -16,6 +16,47 @@ purposeDropdown.html = "<select style='-webkit-appearance: none; background: tra
 timeDropdown.html = "<select style='-webkit-appearance: none; background: transparent; border: none; font-size: 20px; font-family: Circular Std; height: 29px; width: 160px;  background: url() no-repeat right center; margin-top: 7px'><option>Weeks</option><option>Months</option></select>"
 time.html = "<input type=text placeholder='Time' style='padding:7px 0px; width: 100px; margin-top: 0px; margin-left: 3px; font-size: 20px; font-family: Circular Std'>"
 
+#sign up 
+emailButton.html = "<input type=text placeholder='Email/Username' style='padding:7px 5px; margin-top: 5px; margin-left: 3px; width: 200px; font-size: 18px; font-family: Circular Std'>"
+passwordbutton.html = "<input type=password placeholder='Password' style='padding:7px 5px; margin-top: 5px; margin-left: 3px; width: 200px; font-size: 18px; font-family: Circular Std'>"
+
+emailInput.html = "<input type=text placeholder='Email/Username' style='padding:7px 5px; margin-top: 5px; margin-left: 3px; width: 200px; font-size: 18px; font-family: Circular Std'>"
+passwordInput.html = "<input type=password placeholder='Password' style='padding:7px 5px; margin-top: 5px; margin-left: 3px; width: 200px; font-size: 18px; font-family: Circular Std'>"
+codeInput.html = "<input type=text placeholder='Verification Code' style='padding:7px 5px; margin-top: 5px; margin-left: 3px; width: 200px; font-size: 18px; font-family: Circular Std'>"
+
+createAccount.onClick ->
+	createAccount.visible = false
+	codeDialogue_Copy.visible = true
+	questionButton_Copy.visible = true
+	activateSection.visible = true
+		
+	Utils.delay 3, ->
+		codeDialogue_Copy.visible = false
+		codeSent.visible = true
+		banner.visible = true
+		banner.animate
+			y: 10
+			options: 
+				curve: Bezier.ease
+				time: 0.8
+				
+	Utils.delay 6, ->
+		banner.animate
+			y: -200
+			options: 
+				curve: Bezier.ease	
+
+closebutton.onTap ->
+	flow.showPrevious(SignUp1)
+	emailInput2.visible = false
+	passwordInput2.visible = false
+	verificationInput.visible = false
+	emailInput1.visible = true
+	passwordInput1.visible = true
+
+questionButton_Copy.onClick ->
+	flow.showOverlayCenter(PopUp_Copy)
+
 #enjoy buttons
 enjoy = [parks, culturalHistory, games, hiking, museums, movies, magazines, architecture, animals, theatre, pizza, books, cafes]
 
@@ -104,137 +145,8 @@ textBothMins1.onClick ->
 	textBothMins.visible = true
 	textBothMins1.visible = false  
 	
-# #home swipes
-# #SSN swipe
-# SSN3.draggable.enabled = true 
-# SSN3.draggable.vertical = false 				
-# 		
-# SSN3.on Events.DragEnd, ->
-# 	if SSN3.x < -30
-# 		SSN3.animate 
-# 			properties:
-# 				x: -112
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 	else 
-# 		SSN3.animate
-# 			properties:
-# 				x: 0
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 
-# #mobile phone swipe
-# mobilePhone.draggable.enabled = true 
-# mobilePhone.draggable.vertical = false 				
-# 		
-# mobilePhone.on Events.DragEnd, ->
-# 	if mobilePhone.x < -30
-# 		mobilePhone.animate 
-# 			properties:
-# 				x: -112
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 	else 
-# 		mobilePhone.animate
-# 			properties:
-# 				x: 0
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 
-# #bank swipe
-# bank.draggable.enabled = true 
-# bank.draggable.vertical = false 				
-# 		
-# bank.on Events.DragEnd, ->
-# 	if bank.x < -30
-# 		bank.animate 
-# 			properties:
-# 				x: -112
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 	else 
-# 		bank.animate
-# 			properties:
-# 				x: 0
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 
-# #emergency services swipe				
-# emergencyServices.draggable.enabled = true 
-# emergencyServices.draggable.vertical = false 				
-# 		
-# emergencyServices.on Events.DragEnd, ->
-# 	if emergencyServices.x < -30
-# 		emergencyServices.animate 
-# 			properties:
-# 				x: -112
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-# 	else 
-# 		emergencyServices.animate
-# 			properties:
-# 				x: 0
-# 				curve: "spring(1000,40)"
-# 				time: 0.1
-
-#drag and drop
-tiles = [applyForSSN, getMobilePhone, findBank, emergencyServices1]
-heightVal = 124
-startIndex = null
-
-sortVertically = (array) ->
-	for bo, t in array
-		bo.animateStop()
-		if bo.draggable.isDragging is false 
-			bo.animate properties:
-				y: heightVal * t 
-			
-updateIndex = (layer, array) ->
-	midYs = array.map (i) -> i.midY
-	
-	if midYs[startIndex] <= midYs[startIndex-1]
-		array.splice(startIndex, 1)
-		array.splice(startIndex-1, 0, layer)
-		startIndex = array.indexOf(layer)
-		sortVertically(array)
-	else if midYs[startIndex] >= midYs[startIndex+1]
-		array.splice(startIndex, 1)
-		array.splice(startIndex+1, 0, layer)
-		startIndex = array.indexOf(layer)
-		sortVertically(array)
-
-for i in [0...tiles.length]	
-
-	tiles[i].draggable = true 
-	
-	tiles[i].on Events.LongPress, (event) ->
-		this.bringToFront()
-# 		this.draggable = true
-		
-		startIndex = tiles.indexOf(this)
-		
-		this.animate	
-			properties:
-				scale: 1.1
-				shadow: 4
-				shadowBlur: 15
-				shadowColor: "rgba(0,0,0,0.2)"
-	
-	tiles[i].on Events.DragMove, (event, layer) ->
-		updateIndex(layer, tiles)
-		sortVertically(tiles)
-	
-	tiles[i].on Events.DragEnd, (event, layer) ->
-		this.animate properties:
-			x: 0
-			y: heightVal * (tiles.indexOf(this))
-			scale: 1
-			shadow: 0
-			shadowBlur: 0
-
-
 flow = new FlowComponent
-flow.showNext(PhonePlanFilter1)
+flow.showNext(SignUp1)
 mainIndicator.visible = false
 flow.backgroundColor = "white"
 
@@ -275,7 +187,7 @@ readyButton.onClick ->
 	mainIndicator.visible = false 
 
 flow.footer = mainMenu 
-flow.footer.visible = false 
+flow.footer.visible = false
 
 
 #onboarding indicators
@@ -339,7 +251,7 @@ slider.knob.draggable.updatePosition = (point) ->
 	return point
 
 dataSliderText = new Layer
-	html: "500<span class='tSize'>MB</span>"
+	html: "1<span class='tSize'>GB</span>"
 	color: "black"
 	backgroundColor: ""
 	x: Align.center
@@ -375,6 +287,8 @@ slider.onValueChange ->
 		dataSliderText.html = "10<span class='tSize'>GB</span>"
 	if slider.value == 100
 		dataSliderText.html = "Unlimited"
+slider.visible = false 
+dataSliderText.visible = false 
 
 #minutes slider
 slider1 = new SliderComponent
@@ -431,6 +345,8 @@ slider1.onValueChange ->
 		minutesSliderText.html = "2000"
 	if slider1.value == 100
 		minutesSliderText.html = "Unlimited"
+slider1.visible = false 
+minutesSliderText.visible = false 
 
 #messages slider
 slider2 = new SliderComponent
@@ -497,7 +413,7 @@ needsScroll.contentInset =
 	bottom: 80
 
 #needs buttons
-needs = [SSN1, bankAccount, embassy, transitOptions, phonePlan, pharmacy, laundromat, emergencyServices, medicalInsurance, doctor, groceryStores, postOffice, worship]
+needs = [SSN2, bankAccount, embassy, transitOptions, phonePlan, pharmacy, laundromat, emergencyServices, medicalInsurance, doctor, groceryStores, postOffice, worship]
 
 for i in [0...needs.length]
 
@@ -516,27 +432,194 @@ for i in [0...needs.length]
 			else 
 				this.stateSwitch("on")
 
-# homeScrolls= ScrollComponent.wrap(homeScroll)
-# sketch.homeScroll = homeScrolls.content
-# homeScrolls.scrollHorizontal = false 
-# homeScrolls.scrollVertical = false
-# homeScrolls.contentInset = 
-# 	bottom: 80
+homeScrolls= ScrollComponent.wrap(homeScroll)
+sketch.homeScroll = homeScrolls.content
+homeScrolls.scrollHorizontal = false 
+# homeScrolls.scrollVertical = true
+homeScrolls.contentInset = 
+	bottom: 80
+
+#home swipes
+#SSN swipe
+swipes = [SSN1, bank, mobilePhone, emergencyNumbers]
+
+for swipe in swipes 
+	swipe.draggable.enabled = true 
+	swipe.draggable.vertical = false 
+# 	swipe.draggable.directionLock = true
+	
+	swipe.on Events.DragStart, ->
+		homeScrolls.scrollVertical = false 
+	
+	swipe.on Events.DragEnd, ->
+		homeScrolls.scrollVertical = true 
+		if this.x < -30
+			this.animate
+				properties:
+					x: -112
+					time: 0.1
+		else 
+			this.animate
+				properties:
+					x: 0 
+					time: 0.1
+					
+
+# listReordering = ->
+# 	Utils.delay 0.5, ->
+# 		for swipe, i in swipes
+# 			swipe.animateStop()
+# 			if swipe.isDone
+# 				swipe.animate
+# 					properties:
+# 						x: 0
+# 						y: i * heightVal
+# 			else
+# 				swipe.animate
+# 					properties:
+# 						x: 0
+# 						y: i * heightVal
+# 
+# deleteTask = ->
+# 	swipes[selectedSwipe].animate
+# 		properties:
+# 			x: -screenWidth
+# 		time: 0.2
+# 		
+# # 	if !swipes[selectedSwipe].isDone
+# # 		numOfActiveTasks--
+# 	
+# 	# remove the selected task from the array
+# 	swipes.splice(selectedSwipe, 1)
+# 	
+# 	sortVertically(swipes)
+# 	
+# 	listReordering()
+	
+
+#drag and drop and hide
+tiles = [applyForSSN, getMobilePhone, findBank, emergencyServices1]
+heightVal = 124
+startIndex = null
+
+sortVertically = (array) ->
+	for bo, t in array
+		bo.animateStop()
+		if bo.draggable.isDragging is false 
+			bo.animate properties:
+				y: heightVal * t 
+			
+updateIndex = (layer, array) ->
+	midYs = array.map (i) -> i.midY
+	
+	if midYs[startIndex] <= midYs[startIndex-1]
+		array.splice(startIndex, 1)
+		array.splice(startIndex-1, 0, layer)
+		startIndex = array.indexOf(layer)
+		sortVertically(array)
+	else if midYs[startIndex] >= midYs[startIndex+1]
+		array.splice(startIndex, 1)
+		array.splice(startIndex+1, 0, layer)
+		startIndex = array.indexOf(layer)
+		sortVertically(array)
+
+for i in [0...tiles.length]	
+	
+	tiles[i].on Events.LongPress, (event) ->
+		this.bringToFront()
+		this.draggable = true
+		homeScrolls.scrollVertical = false 
+		swipe.draggable.enabled = false for swipe in swipes 
+		
+		startIndex = tiles.indexOf(this)
+	
+		this.animate	
+			properties:
+				scale: 1.1
+				shadow: 4
+				shadowBlur: 15
+				shadowColor: "rgba(0,0,0,0.2)"
+	
+	tiles[i].on Events.LongPressEnd, ->
+		this.draggable = false 
+		homeScrolls.scrollVertical = true 
+		swipe.draggable.enabled = true for swipe in swipes 
+	
+	tiles[i].on Events.DragMove, (event, layer) ->
+		updateIndex(layer, tiles)
+		sortVertically(tiles)
+	
+	tiles[i].on Events.DragEnd, (event, layer) ->
+		this.animate properties:
+			x: 0
+			y: heightVal * (tiles.indexOf(this))
+			scale: 1
+			shadow: 0
+			shadowBlur: 0
+
+SSNPageScrolls = ScrollComponent.wrap(SSNPageScroll)
+sketch.SSNPageScroll = SSNPageScrolls.contnet
+SSNPageScrolls.scrollHorizontal = false
+SSNPageScrolls.contentInset =
+	bottom: 80
+
+phonePlanScroll = ScrollComponent.wrap(phonePlansScroll)
+sketch.phonePlansScroll = phonePlanScroll.content
+phonePlanScroll.scrollHorizontal = false 
+phonePlanScroll.contentInset = 
+	bottom: 100 
+
+tMobileScroll = ScrollComponent.wrap(tMobilePlanScroll)
+sketch.tMobilePlanScroll = tMobileScroll.content
+tMobileScroll.scrollHorizontal = false 
+tMobileScroll.contentInset = 
+	bottom: 100
 	
 #general app flow 
-applyForSSN.onClick ->
-	flow.showNext(SSNPage)
+epilson = 150
+time1 = null 
 
+applyForSSN.on Events.TouchStart, ->
+	time1 = new Date
+
+applyForSSN.on Events.Click, ->
+	if new Date - time1 < epilson 
+		flow.showNext(SSNPage)
+		
 SSNPageBack.onClick ->
 	flow.showPrevious(home)
+	
+getMobilePhone.on Events.TouchStart, ->
+	time1 = new Date
 
-getMobilePhone.onClick ->
-	flow.showNext(PhonePlanFilter1)
-	flow.footer.visible = false 
+getMobilePhone.on Events.Click, ->
+	if new Date - time1 < epilson
+		flow.showNext(PhonePlanFilter1)
+		flow.footer.visible = false 
+		
+		Utils.delay 0.2, ->
+			slider.visible = true 
+			slider1.visible = true 
+			minutesSliderText.visible = true 
+			dataSliderText.visible = true 
+			
+sketch.signInButton.onClick ->
+	flow.showNext(home)
+	flow.footer.visible = true
+
+sketch.createAccountButton.onClick ->
+	flow.showNext(sketch.SignUp2)
+
+sketch.activateButton_Copy.onClick ->
+	flow.showNext(onboardingMain)
 	
 phonePlanFilter1Back.onClick ->
 	flow.showPrevious(home)
 	flow.footer.visible = true
+	slider.visible = false 
+	slider1.visible = false 
+	minutesSliderText.visible = false 
+	dataSliderText.visible = false 
 
 phonePlanNext.onClick ->
 	flow.showNext(PhonePlanFilter2)
@@ -544,8 +627,10 @@ phonePlanNext.onClick ->
 	slider1.visible = false 
 	minutesSliderText.visible = false 
 	dataSliderText.visible = false 
-	slider2.visible = true 
-	messagesSliderText.visible = true 
+	
+	Utils.delay 0.2, ->
+		slider2.visible = true 
+		messagesSliderText.visible = true 
 
 phonePlanSkip1.onClick ->
 	flow.showNext(mobilePlan)
@@ -554,4 +639,46 @@ phonePlanSkip1.onClick ->
 	slider1.visible = false 
 	minutesSliderText.visible = false 
 	dataSliderText.visible = false 
+
+phonePlanFilter2Skip.onClick ->
+	flow.showNext(mobilePlan)
+	flow.footer.visible = true 
+	slider.visible = false 
+	slider1.visible = false 
+	minutesSliderText.visible = false 
+	dataSliderText.visible = false
+
+phonePlanFilter2Back.onClick ->
+	flow.showPrevious(PhonePlanFilter1)
+	slider.visible = true 
+	slider1.visible = true 
+	minutesSliderText.visible = true 
+	dataSliderText.visible = true 
+	
+	slider2.visible = false
+	messagesSliderText.visible = false 
+
+phonePlanFilterSearch.onClick ->
+	flow.showNext(mobilePlan)
+	flow.footer.visible = true 
+	slider2.visible = false
+	messagesSliderText.visible = false 
+
+Filter_icon.onClick ->
+	flow.showNext(PhonePlanFilter1)
+	flow.footer.visible = false 
+	slider.visible = true 
+	slider1.visible = true 
+	minutesSliderText.visible = true 
+	dataSliderText.visible = true
+ 
+mobilePlanBack.onClick ->
+	flow.showNext(home)
+	
+tMobile.onClick ->
+	flow.showNext(tMobilePlan)
+
+tMobileBack.onClick ->
+	flow.showPrevious(mobilePlan)
+
 	
