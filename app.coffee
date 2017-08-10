@@ -365,6 +365,8 @@ menuButton_myPlaces.onClick ->
 	
 	place1.onClick ->
 		flow.showNext(SF_Museum)
+		flow.footer.visible = true
+		flow.footer.x = 0
 		flow.onMove ->
 		SFMuseum_header.y = flow.scroll.scrollY 
 		SFMuseum_header.animate
