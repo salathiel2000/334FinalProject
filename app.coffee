@@ -324,6 +324,9 @@ flow.onMove ->
 #hamburger click
 hamburger_menu_main.onClick ->
 # 	print "click menu"
+	hamburger_menu_main_active.visible = true
+	discover_main_nonactive.visible =true
+# 	discover_main.visible = false
 	flow.overlay.onClick ->
 		flow.current.animate
 			x: 0
@@ -336,19 +339,22 @@ hamburger_menu_main.onClick ->
 			options: 
 				time: 0.4
 				curve: Bezier.ease
+		
+		hamburger_menu_main_active.visible = false
+		discover_main_nonactive.visible = false
 				
 	flow.showOverlayRight(sideMenu)
 	flow.previous.animate
 		x: -188
-# 	flow.footer.animate
-# 		x: -188
+	flow.footer.animate
+		x: -188
 # 	print flow.current.name
 # 	print a
 
 menuButton_myPlaces.onClick ->
 	flow.showPrevious()
 	flow.showNext(myPlaces)
-	flow.footer.x = 0
+	flow.footer.visible = false
 	
 	flow.onMove ->
 		myPlaces_header.y = flow.scroll.scrollY 
@@ -367,25 +373,46 @@ menuButton_myPlaces.onClick ->
 	
 myPlaces_backIcon.onClick ->
 	flow.showPrevious()
-	flow.footer.x = 0
+	flow.footer.visible = true
+	flow.footer.animate
+			x: 0
+			options: 
+				time: 0.5
+				curve: Bezier.ease
+	hamburger_menu_main_active.visible = false
+	discover_main_nonactive.visible = false
 
 menuButton_myInfo.onClick ->
 	flow.showPrevious()
 	flow.showNext(Menu_myInfo)
-	flow.footer.x = 0
+	flow.footer.visible = false
 
 myInfo_backIcon.onClick ->
 	flow.showPrevious()
-	flow.footer.x = 0
+	flow.footer.visible = true
+	flow.footer.animate
+			x: 0
+			options: 
+				time: 0.5
+				curve: Bezier.ease
+	hamburger_menu_main_active.visible = false
+	discover_main_nonactive.visible = false
 
 menuButton_settings.onClick ->
 	flow.showPrevious()
 	flow.showNext(menu_settings)
-	flow.footer.x = 0
+	flow.footer.visible = false
 
 settings_backButton.onClick ->
 	flow.showPrevious()
-	flow.footer.x = 0
+	flow.footer.visible = true
+	flow.footer.animate
+			x: 0
+			options: 
+				time: 0.5
+				curve: Bezier.ease
+	hamburger_menu_main_active.visible = false
+	discover_main_nonactive.visible = false
 
 myProfile_editButton.onClick ->
 	flow.showNext(settings_edit_myprofile)
@@ -395,6 +422,3 @@ myProfile_backButton.onClick ->
 
 myProfile_applyButton.onClick ->
 	flow.showPrevious(menu_settings)
-
-
-
